@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <title>A-Frame Introduction!</title>
+        <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+        <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
+        <script src="js/spinning-effect.js"></script>
+
+        <link rel="stylesheet" href="css/user-gesture.css">
+
+        <script>
+            AFRAME.registerComponent('start-experience', {
+                init : function() {
+                    console.log('scene loaded');
+                    document.querySelector('#user-gesture-button').style.display = 'block';
+                }
+            });
+
+            const startExperience = function () {
+                document.querySelector('#user-gesture-overlay').style.display = 'none'; //hide overlay and button
+
+                //get all ambient sounds and start all
+                const ambientSounds = document.querySelectorAll('.ambient-sound');
+                ambientSounds.forEach(function(soundEntity) {
+                    soundEntity.components.sound.playSound();
+                });
+            };
+        </script>
+    </head>
+    <body>
+        <!-- our USER GESTURE OVERLAY-->
+        <div id="user-gesture-overlay">
+            <div class="center">
+                <button id="user-gesture-button" onclick="startExperience();"> Enter Experience</button>
+            </div>
+        </div>
+
+        <a-scene start-experience>
+            <!-- this is where we load all assets such as images, sound, video, models etc. -->
+            <a-assets>
+                <!-- ALWAYS set crossorigin anonymous on images so they load properly -->
+                <img id="earth_img" src="assets/images/Earth.jpg" crossorigin="anonymous">
+                <img id="mars_img" src="assets/images/MarsSurface.jpg" crossorigin="anonymous">
+
+                <!-- our spherical diffuse texture for Earth -->
+                <img id="earth_map" src="assets/images/EarthMap.jpg" crossorigin="anonymous">
+
+                <!-- A-Frame has an "a-asset-item" HTML entity for any asset that does not alreadty exist in HTML standards -->
+                <a-asset-item id="mars_model" src="/assets/models/mars.glb" response-type="arraybuffer"></a-asset-item>
+
+                <!-- preload:auto - try to load before we play it, Don't forget crossorigin:anonymous so we can load from across domains -->
+                <audio id="space_music" src="assets/sounds/SpaceMusic.mp3" preload="auto" crossorigin="anonymous"></audio>
+            </a-assets>
+
+            <!-- define our camera -->
+             <a-entity id="mainCam" camera wasd-controls look-controls position="0 1.6 0">
+                <!-- castShadows only works on geometry that receives shadows using the 'shadow' component -->
+                <a-entity id="flashlight" position="0.5 -0.5 0" light="type:spot; intensity:1.4; castShadow:true; angle:40.0; penumbra:0.3;"></a-entity>
+                <a-entity cursor="rayOrigin:mouse;" raycaster="far:5; interval:200; objects:.interactive"></a-entity>
+             </a-entity>
+
+             <!-- some bg vibes -->
+            <a-entity id="bg_music" sound="src:#space_music; autoplay:true;"></a-entity>
+
+            <!-- earth display -->
+            <a-entity   id="earth_plane" position="0 0.5 -4" rotation="-30 0 0">
+                <!-- image -->
+                <a-entity   position="0.65 0 0.01" geometry="primitive:plane; width:1.5; height:1.0;" material="src:#earth_img" shadow="cast:false; receive:true;"></a-entity>
+                <!-- box -->
+                <a-entity   position="0 0 -0.11" geometry="primitive:box; width:3.0; height:1.2; depth:0.2;" material="color:white" shadow="cast:true; receive:true;"></a-entity>
+                <!-- title text -->
+                <a-entity   position="-1.4 0.5 0.01" text="value:Earth; color:black; font:roboto; anchor:left; baseline:top; width:1.3; wrapCount:12;"></a-entity>
+                <!-- information text -->
+                <a-entity   position="-1.4 0.25 0.01" text="value:I personally prefer calling this Kerbal. It's over 4.5 billion years old.; 
+                                        color:black; font:roboto; anchor:left; baseline:top; width:1.25; wrapCount:18;"></a-entity></a-entity>
+            </a-entity>
+            <a-entity   id="earth"
+                        position="0 3.5 -6"
+                        rotation="0 -90 0"
+                        geometry="primitive:sphere; radius:2.0;"
+                        material="src:#earth_map;"
+                        shadow="cast:true; receive:true;">
+            </a-entity>
+
+            <!-- mars display -->
+            <a-entity   id="mars_plane" position="4 0.5 0" rotation="-30 -90 0">
+                <!-- image -->
+                <a-entity   position="0.65 0 0.01" geometry="primitive:plane; width:1.5; height:1.0;" material="src:#mars_img" shadow="cast:false; receive:true;"></a-entity>
+                <!-- box -->
+                <a-entity   position="0 0 -0.11" geometry="primitive:box; width:3.0; height:1.2; depth:0.2;" material="color:white" shadow="cast:true; receive:true;"></a-entity>
+                <!-- title text -->
+                <a-entity   position="-1.4 0.5 0.01" text="value:Mars; color:black; font:roboto; anchor:left; baseline:top; width:1.3; wrapCount:12;"></a-entity>
+                <!-- information text -->
+                <a-entity   position="-1.4 0.25 0.01" text="value:Still trying to land on this planet, skill issue tbh; 
+                                        color:black; font:roboto; anchor:left; baseline:top; width:1.25; wrapCount:18;"></a-entity></a-entity>
+            </a-entity>
+            <a-entity   id="mars"
+                        position="6 3.5 0"
+                        rotation="0 -90 0"
+                        scale="0.002 0.002 0.002"
+                        gltf-model="#mars_model"
+                        shadow="cast:true; receive:true;"></a-entity>
+
+            <!-- need a room to contain our museum, and receive shadows -->
+            <a-entity id="room">
+                <a-entity class="ground" geometry="primitive:plane; width:14; height:14;" material="color:white;" position="0 0.01 0" rotation="-90 0 0" shadow="cast:false; receive:true;"></a-entity>
+                
+                <a-entity id="walls">
+                    <a-entity class="wall" geometry="primitive:plane; width:30; height:3;" material="color:white;" position="15 8 0"  rotation="0 -90 0" shadow="cast:false; receive:true;"></a-entity>
+                    <a-entity class="wall" geometry="primitive:plane; width:30; height:3;" material="color:white;" position="-15 8 0" rotation="0 90 0" shadow="cast:false; receive:true;"></a-entity>
+                    <a-entity class="wall" geometry="primitive:plane; width:30; height:3;" material="color:white;" position="0 8 15"  rotation="0 180 0" shadow="cast:false; receive:true;"></a-entity>
+                    <a-entity class="wall" geometry="primitive:plane; width:30; height:3;" material="color:white;" position="0 8 -15" rotation="0 0 0" shadow="cast:false; receive:true;"></a-entity>
+                </a-entity>
+            </a-entity>
+
+            <a-entity id="universal_button">
+                <a-entity   class="button interactive" spinning-effect="duration:10000;" position="0 0.6 0" geometry="primitive:cylinder; radius:0.15; height:0.2;" material="color:rgb(255,100,100);" shadow="cast:true; receive:true"
+                            animation__mouseenter="property:material.color; type:color; to:rgb(255,0,0); startEvents:mouseenter; dur:200;"
+                            animation__leave="property:material.color; type:color; to:rgb(255,100,100); startEvents:mouseleave; dur:200;"
+                            animation__click="property:position.y; from:0.55; to:0.6; startEvents:click; dur:200;"></a-entity>
+                <a-entity class="pedastal" position="0 0.3 0" geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" material="color:white;" shadow="cast:true; receive:true"></a-entity>
+            </a-entity>
+
+            <!-- add a basic environment to help ground users visually -->
+            <a-entity environment="preset:starry;"></a-entity>
+        </a-scene>
+    </body>
+</html>
