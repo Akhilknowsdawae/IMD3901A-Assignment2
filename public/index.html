@@ -28,7 +28,7 @@
              <!-- some bg vibes -->
 
 
-            <!--Kitchen Furniture-->
+            <!--Blacksmith Stuff-->
             <a-entity id="work_area">
                 <!-- Left counter: Molten Metal-->
                  <a-entity id="counter_left" position="-5 0 0" rotation="0 90 0">
@@ -82,10 +82,65 @@
                     </a-entity>
                     <!-- Light from the fire -->
                     <a-entity light="type:point; intensity:2.0; distance:10; color:#ff4500"
-                              position="0 1.5 0"></a-entity>
+                              position="0 1.5 0">
+                    </a-entity>
+                 </a-entity>
+
+                <!-- Grinder -->
+                 <a-entity id="grinder" position="4 0 -5">
+                    <!-- Base -->
+                     <a-entity geometry="primitive:box; width:2; height:0.8; depth:1"
+                               material="color:#444;"
+                               position="0 0.6 0">
+                     </a-entity>
+
+                     <!--Support Legs-->
+                     <a-entity geometry="primitive:box; width:0.2 height:0.1; depth:0.2;" material="color:#666;" position="-0.8 0 -0.3"></a-entity>
+                     <a-entity geometry="primitive:box; width:0.2 height:0.2; depth:0.2;" material="color:#666;" position="0.8 0 -0.3"></a-entity>
+                     <a-entity geometry="primitive:box; width:0.2 height:0.2; depth:0.2;" material="color:#666;" position="-0.8 0 0.3"></a-entity>
+                     <a-entity geometry="primitive:box; width:0.2 height:0.2; depth:0.2;" material="color:#666;" position="0.8 0 0.3"></a-entity>
+
+                    <a-entity geometry="primitive:cylinder; radius:0.6; height:0.2;"
+                              material="color:#888; metalness:0.8; roughness:0.2;"
+                              position="0 1 0"
+                              rotation="0 0 0"
+                              animation="property: rotation; to: 0 360 0; loop: true; dur:50; easing:linear">
+                        
+                        <!--Wheel center-->
+                        <a-entity geometry="primitive:cylinder; radius:0.2; height:0.25;"
+                                  material="color:#444; metalness:0.9;"
+                                  position="0 0 0">
+                        </a-entity>
+                        
+                        <!-- Spokes-->
+                        <a-entity geometry="primitive:box; width:1.2; height:0.05; depth:0.1;"
+                                  material="color:#555"
+                                  position="0 0 0"
+                                  rotation="0 0 0">
+                        </a-entity>
+
+                        <a-entity geometry="primitive:box; width:1.2; height:0.05; depth:0.1;"
+                                  material="color:#555"
+                                  position="0 0 0"
+                                  rotation="0 0 45">
+                        </a-entity>
+
+                        <a-entity geometry="primitive:box; width:1.2; height:0.05; depth:0.1;"
+                                  material="color:#555"
+                                  position="0 0 0"
+                                  rotation="0 0 90">
+                        </a-entity>
+
+                        <a-entity geometry="primitive:box; width:1.2; height:0.05; depth:0.1;"
+                                  material="color:#555"
+                                  position="0 0 0"
+                                  rotation="0 0 135">
+                        </a-entity>
+                    </a-entity>
+                 </a-entity>
             </a-entity>
 
-            <!-- need a room to contain our museum, and receive shadows -->
+            <!-- Room of walls -->
             <a-entity id="room">
                 <a-entity class="ground" 
                           geometry="primitive:plane; width:16; height:16;" 
