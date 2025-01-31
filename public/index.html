@@ -4,6 +4,7 @@
         <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
 
         <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
+
         <script src="js/spinning-effect.js"></script>
 
         <link rel="stylesheet" href="css/user-gesture.css">
@@ -17,7 +18,7 @@
             </a-assets>
 
             <!-- define our camera -->
-             <a-entity id="mainCam" camera wasd-controls look-controls position="0 1.6 0">
+             <a-entity id="mainCam" camera wasd-controls="acceleration: 20" look-controls position="0 1.6 0">
                 <!-- castShadows only works on geometry that receives shadows using the 'shadow' component -->
                 <a-entity cursor="rayOrigin:mouse;" 
                           raycaster="far:5; interval:200; objects:.interactive">
@@ -28,14 +29,21 @@
 
 
             <!--Kitchen Furniture-->
-            <a-entity id="kitchen_furniture">
-                <!-- Open counter: left-->
-                 <a-entity id="counter_left"
-                        geometry="primitive:box; width:4; height:0.75; depth:1;"
-                        material="color:#8B4513;"
-                        position="-5 0.3 0"
-                        rotation="0 90 0"
-                        shadow="cast:true; receive:true">
+            <a-entity id="work_area">
+                <!-- Left counter: Molten Metal-->
+                 <a-entity id="counter_left" position="-5 0 0" rotation="0 90 0">
+                    <!--Wood base-->
+                    <a-entity
+                        geometry="primitive:box; width:2; height:0.75; depth:1;"
+                        material="color:#4B3621; metalness:0.1; roughness:0.9;"
+                        position="0 0.75 0">
+                    </a-entity>
+                    <!-- Molten Metal Surface-->
+                     <a-entity 
+                     geometry="primitive:box; width:1.9; height:0.1; depth:0.9;"
+                     material="color:#ff4500; emissive:#ff4500; emissiveIntensity:1.5;"
+                     position="0 1.1 0">
+                     </a-entity>
                 </a-entity>
                 <!-- Open Counter: right-->
                 <a-entity id="counter_right"
@@ -45,31 +53,43 @@
                         rotation="0 -90 0"
                         shadow="cast:true; receive:true">
                 </a-entity>
-                
-                <a-entity id="sink" position="0 0 -5">
-                    <a-entity geometry="primitive:box; width:1.5; height:1; depth:1;"
-                              material="color:#ffffff;"
+                <!-- Anvil -->
+                <a-entity id="anvil" position="0 0 -5">
+                    <a-entity geometry="primitive:box; width:2; height:0.8; depth:1.5;"
+                              material="color:#666; metalness:0.8; roughness:0.3;"
                               position="0 0.5 0"
                               shadow="cast:true; receive:true">
                     </a-entity>
-                    <a-entity geometry="primitive:cylinder; radius:0.05; height:0.2"
-                              material="color:#ffffff"
-                              position="0.55 1.1 -0.4"
-                              shadow="cast:true; receive:true">
-                    </a-entity>
-                    <a-entity geometry="primitive:cylinder; radius:0.05; height:0.2"
-                              material="color:#ffffff"
-                              position="-0.55 1.1 -0.4"
+                    <a-entity geometry="primitive:box; width:1.8; height:0.3; depth:1.3;"
+                              material="color:#555; metalness:0.9; roughness:0.2;"
+                              position="0 0.9 0"
                               shadow="cast:true; receive:true">
                     </a-entity>
                 </a-entity>
+
+                <!-- Forge -->
+                 <a-entity id="forge" position="-7.55 0 -7.546" rotation="0 45 0">
+                    <!-- Forge Base-->
+                    <a-entity geometry="primitive:box; width:3; height:2; depth:2;"
+                              material="color:#551A1A"
+                              position="0 1 0">
+                    </a-entity>
+                    <!-- Glowing Fire-->
+                    <a-entity geometry="primitive:sphere; radius:0.8;"
+                              material="color:#ff4500; emissive:#ff4500; emissiveIntensity:2"
+                              position="0 1 0.45"
+                              animation__glow="property: material.emissiveIntensity; from 1.5; to: 5.5; dur: 1000; dir: alternate; loop: true">
+                    </a-entity>
+                    <!-- Light from the fire -->
+                    <a-entity light="type:point; intensity:2.0; distance:10; color:#ff4500"
+                              position="0 1.5 0"></a-entity>
             </a-entity>
 
             <!-- need a room to contain our museum, and receive shadows -->
             <a-entity id="room">
                 <a-entity class="ground" 
                           geometry="primitive:plane; width:16; height:16;" 
-                          material="color:white;" 
+                          material="color:#444; metalness:0.2; roughness:0.8;" 
                           position="0 0.01 0" 
                           rotation="-90 0 0" 
                           shadow="cast:false; receive:true;">
@@ -78,14 +98,14 @@
                 <a-entity id="walls">
                     <a-entity class="wall" 
                               geometry="primitive:plane; width:20; height:10;" 
-                              material="color:white;" 
+                              material="color:#333; metalness:0.3; roughness:0.9;" 
                               position="8 4 0"  
                               rotation="0 -90 0" 
                               shadow="cast:false; receive:true;">
                     </a-entity>
                     <a-entity class="wall" 
                               geometry="primitive:plane; width:20; height:10;" 
-                              material="color:white;" 
+                              material="color:#333; metalness:0.3; roughness:0.9;" 
                               position="-8 4 0"  
                               rotation="0 90 0" 
                               shadow="cast:false; receive:true;">
@@ -93,7 +113,7 @@
                     <!--Back-->
                     <a-entity class="wall" 
                               geometry="primitive:plane; width:20; height:10;" 
-                              material="color:white;" 
+                              material="color:#333; metalness:0.3; roughness:0.9;" 
                               position="0 4 5.5"  
                               rotation="0 180 0" 
                               shadow="cast:false; receive:true;">
@@ -101,7 +121,7 @@
                     <!--Front-->
                     <a-entity class="wall" 
                               geometry="primitive:plane; width:20; height:10;" 
-                              material="color:white;" 
+                              material="color:#333; metalness:0.3; roughness:0.9;" 
                               position="0 4 -8"  
                               rotation="0 0 0" 
                               shadow="cast:false; receive:true;">
@@ -110,7 +130,7 @@
 
                 <a-entity id="roof"
                           geometry="primitive:plane; width:16; height:16;"
-                          material="color:#white"
+                          material="color:#555; metalness:0.6; roughness:0.4;"
                           position="0 8.5 0"
                           rotation="90 0 0"
                           shadow="cast:false; receive:true">
