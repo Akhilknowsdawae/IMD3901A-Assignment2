@@ -30,23 +30,39 @@
             <!--Kitchen Furniture-->
             <a-entity id="kitchen_furniture">
                 <!-- Open counter: left-->
-                 <a-box id="counter_left"
-                        geometry="primitive:box; width:4; height:0.75; depth:1"
+                 <a-entity id="counter_left"
+                        geometry="primitive:box; width:4; height:0.75; depth:1;"
                         material="color:#8B4513;"
                         position="-5 0.3 0"
                         rotation="0 90 0"
                         shadow="cast:true; receive:true">
-                </a-box>
+                </a-entity>
                 <!-- Open Counter: right-->
-                <a-box id="counter_right"
-                        geometry="primitive:box; width:4; height:0.75; depth:1"
+                <a-entity id="counter_right"
+                        geometry="primitive:box; width:4; height:0.75; depth:1;"
                         material="color:#8B4513;"
                         position="5 0.3 0"
                         rotation="0 -90 0"
                         shadow="cast:true; receive:true">
-                </a-box>
+                </a-entity>
                 
-                
+                <a-entity id="sink" position="0 0 -5">
+                    <a-entity geometry="primitive:box; width:1.5; height:1; depth:1;"
+                              material="color:#ffffff;"
+                              position="0 0.5 0"
+                              shadow="cast:true; receive:true">
+                    </a-entity>
+                    <a-entity geometry="primitive:cylinder; radius:0.05; height:0.2"
+                              material="color:#ffffff"
+                              position="0.55 1.1 -0.4"
+                              shadow="cast:true; receive:true">
+                    </a-entity>
+                    <a-entity geometry="primitive:cylinder; radius:0.05; height:0.2"
+                              material="color:#ffffff"
+                              position="-0.55 1.1 -0.4"
+                              shadow="cast:true; receive:true">
+                    </a-entity>
+                </a-entity>
             </a-entity>
 
             <!-- need a room to contain our museum, and receive shadows -->
@@ -90,6 +106,22 @@
                               rotation="0 0 0" 
                               shadow="cast:false; receive:true;">
                     </a-entity>
+                </a-entity>
+
+                <a-entity id="roof"
+                          geometry="primitive:plane; width:16; height:16;"
+                          material="color:#white"
+                          position="0 8.5 0"
+                          rotation="90 0 0"
+                          shadow="cast:false; receive:true">
+                </a-entity>
+            </a-entity>
+
+            <a-entity id="overhead_lights">
+                <!--Center Light-->
+                <a-entity light="type:point; intensity:1.2; distance:5.0; color:#ffffff"
+                          position="0 3.5 0"
+                          shadow="cast:true">
                 </a-entity>
             </a-entity>
 
