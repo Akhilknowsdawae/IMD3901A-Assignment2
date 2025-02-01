@@ -61,6 +61,10 @@ AFRAME.registerComponent('activate-molten', {
         model2.setAttribute('scale', '6 6 6'); 
         model2.setAttribute('position', '0.5 1 0');
 
+        //Pickup item attribute
+        model1.setAttribute('pickupable');
+        model2.setAttribute('pickupable');
+
         let counterLeft = document.querySelector('#counter_left');
         counterLeft.appendChild(model1);
         counterLeft.appendChild(model2);
