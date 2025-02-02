@@ -11,7 +11,7 @@ AFRAME.registerComponent('pickup-system', {
         CONTEXT_AF.raycaster = CONTEXT_AF.camera.querySelector('[raycaster]');
         CONTEXT_AF.heldItem = null;
 
-        window.addEventListener('mousedown', function (event) {
+        window.addEventListener('click', function (event) {
             if (event.button === 0) { // Left mouse button
                 if (CONTEXT_AF.heldItem) {
                     CONTEXT_AF.dropItem();
@@ -37,7 +37,7 @@ AFRAME.registerComponent('pickup-system', {
                 // Store original position for dropping later
                 item.setAttribute('data-original-position', JSON.stringify(item.getAttribute('position')));
 
-                // Attach to camera like an FPS item
+                // Attach to camera
                 item.setAttribute('position', '0 -0.2 -0.5'); // holding position
                 item.setAttribute('scale', '0.8 0.8 0.8'); // Slightly smaller if needed
                 CONTEXT_AF.camera.appendChild(item);
