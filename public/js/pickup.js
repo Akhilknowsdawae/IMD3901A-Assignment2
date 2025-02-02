@@ -1,64 +1,79 @@
+//Code built upon: https://glitch.com/~aframe-basic-object-pickup-release
+
 AFRAME.registerComponent('pickupable', {
     init: function () {
-        this.el.classList.add('interactive'); // Make it detectable by the raycaster
-    }
-});
+        var self = this;
+        self.player = document.querySelector('#mainCam');  // Camera/player
+        self.pickedUp = false;
+        self.originalRotation = null;  // Store original rotation
+        self.originalScale = null;  // Store original scale
 
-AFRAME.registerComponent('pickup-system', {
-    init: function () {
-        const CONTEXT_AF = this;
-        CONTEXT_AF.camera = document.querySelector('#mainCam');
-        CONTEXT_AF.raycaster = CONTEXT_AF.camera.querySelector('[raycaster]');
-        CONTEXT_AF.heldItem = null;
+        // Global reference for currently held item
+        if (!AFRAME.utils.entityHeld) {
+            AFRAME.utils.entityHeld = null;
+        }
 
-        window.addEventListener('click', function (event) {
-            if (event.button === 0) { // Left mouse button
-                if (CONTEXT_AF.heldItem) {
-                    CONTEXT_AF.dropItem();
-                } else {
-                    CONTEXT_AF.pickUpItem();
-                }
+        // Ensure object is interactive for raycasting
+        if (!self.el.classList.contains('interactive')) {
+            self.el.classList.add('interactive');
+        }
+
+        self.el.addEventListener('click', function () {
+            if (self.pickedUp) {
+                // Drop item
+                console.log("Dropped:", self.el.id);
+                self.el.sceneEl.object3D.attach(self.el.object3D);  // Keep world transforms
+
+                // Restore previous rotation
+                self.el.object3D.rotation.set(
+                    self.originalRotation.x,
+                    self.originalRotation.y,
+                    self.originalRotation.z
+                );
+
+                // Restore previous scale
+                self.el.object3D.scale.set(
+                    self.originalScale.x,
+                    self.originalScale.y,
+                    self.originalScale.z
+                );
+
+                self.pickedUp = false;
+                AFRAME.utils.entityHeld = null;  // Clear global reference
+            } 
+            else if (AFRAME.utils.entityHeld === null) { // Only pick up if no item is held
+                // Store rotation & scale before picking up
+                self.originalRotation = self.el.object3D.rotation.clone();
+                self.originalScale = self.el.object3D.scale.clone();
+
+                // Pick up item
+                console.log("Picked up:", self.el.id);
+                self.player.object3D.attach(self.el.object3D);
+                self.pickedUp = true;
+                AFRAME.utils.entityHeld = self.el;  // Set global reference
             }
         });
-    },
 
-    pickUpItem: function () {
-        const CONTEXT_AF = this;
-        let intersections = CONTEXT_AF.raycaster.components.raycaster.intersections;
-
-        console.log("Raycaster detected objects:", intersections);
-
-        if (intersections.length > 0) {
-            let item = intersections[0].object.el;
-            if (item && item.classList.contains('interactive')) {
-                console.log('Picked up:', item.id);
-                CONTEXT_AF.heldItem = item;
-
-                // Store original position for dropping later
-                item.setAttribute('data-original-position', JSON.stringify(item.getAttribute('position')));
-
-                // Attach to camera
-                item.setAttribute('position', '0 -0.2 -0.5'); // holding position
-                item.setAttribute('scale', '0.8 0.8 0.8'); // Slightly smaller if needed
-                CONTEXT_AF.camera.appendChild(item);
+        // Hover effect (increase scale by 0.2)
+        self.el.addEventListener('mouseenter', function () {
+            if (!self.pickedUp) {  // Only change scale if not picked up
+                self.originalScale = self.el.object3D.scale.clone();  // Store scale before hover
+                self.el.object3D.scale.set(
+                    self.originalScale.x + 0.2,
+                    self.originalScale.y + 0.2,
+                    self.originalScale.z + 0.2
+                );
             }
-        }
-    },
+        });
 
-    dropItem: function () {
-        const CONTEXT_AF = this;
-        let item = CONTEXT_AF.heldItem;
-        if (item) {
-            console.log('Dropped:', item.id);
-            
-            // Detach from camera
-            document.querySelector('a-scene').appendChild(item);
-            
-            // Reset position to original spot
-            let originalPosition = JSON.parse(item.getAttribute('data-original-position'));
-            item.setAttribute('position', `${originalPosition.x} ${originalPosition.y} ${originalPosition.z}`);
-
-            CONTEXT_AF.heldItem = null;
-        }
+        self.el.addEventListener('mouseleave', function () {
+            if (!self.pickedUp) {  // Only restore scale if not picked up
+                self.el.object3D.scale.set(
+                    self.originalScale.x,
+                    self.originalScale.y,
+                    self.originalScale.z
+                );
+            }
+        });
     }
 });
