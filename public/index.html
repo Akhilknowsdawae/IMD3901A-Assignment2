@@ -4,9 +4,11 @@
         <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
 
         <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
+        <script src="https://unpkg.com/aframe-physics-system@5.0.0/dist/aframe-physics-system.min.js"></script>
 
         <script src="js/molten.js"></script>
         <script src="js/pickup.js"></script>
+        <script src="js/forge-logic.js"></script>
 
         <link rel="stylesheet" href="css/user-gesture.css">
     </head>
@@ -20,7 +22,7 @@
             </a-assets>
 
             <!-- define our camera -->
-             <a-entity id="mainCam" camera wasd-controls="acceleration: 20" look-controls position="0 1.6 0">
+             <a-entity id="mainCam" camera wasd-controls="acceleration: 20" look-controls position="0 1.6 0" dynamic-body>
                 <!-- castShadows only works on geometry that receives shadows using the 'shadow' component -->
                 <a-entity cursor="rayOrigin:mouse;" 
                           raycaster="far:5; interval:200; objects:.interactive">
@@ -71,7 +73,7 @@
                 </a-entity>
 
                 <!-- Forge -->
-                 <a-entity id="forge" position="-7.55 0 -7.546" rotation="0 45 0">
+                 <a-entity id="forge" position="-7.55 0 -7.546" rotation="0 45 0" interactive>
                     <!-- Forge Base-->
                     <a-entity geometry="primitive:box; width:3; height:2; depth:2;"
                               material="color:#551A1A"
@@ -86,6 +88,13 @@
                     <!-- Light from the fire -->
                     <a-entity light="type:point; intensity:2.0; distance:10; color:#ff4500"
                               position="0 1.5 0">
+                    </a-entity>
+                    <!--Forge pad for interactivity-->
+                    <a-entity geometry="primitive:box; width:2; height:0.1; depth:1;"
+                              material="color:551A1A"
+                              position="0 0 1.5"
+                              id="forgePad"
+                              class="interactive">
                     </a-entity>
                  </a-entity>
 
@@ -241,8 +250,8 @@
 
             <!-- Spawnning Test-->
             <!-- <a-entity id="sword" gltf-model="#first_sword_model" position="0 0 0" rotation="-90 0 0" scale="0.008 0.008 0.008"></a-entity> -->
-            <a-entity id="ingot" gltf-model="#iron" position="0 1.5 0" rotation="0 90 0" scale="6 6 6" pickupable></a-entity>
-            <a-entity class="interactive" geometry="primitive:box; width:1; height:1; depth:1" pickupable></a-entity>
+            <a-entity id="ingot" gltf-model="#iron" position="0 1.5 0" rotation="0 90 0" scale="6 6 6" pickupable dynamic-body></a-entity>
+            <a-entity id="ingot" gltf-model="#iron" position="0 2 0" rotation="0 90 0" scale="6 6 6" pickupable dynamic-body></a-entity>
         </a-scene>
     </body>
 </html>
