@@ -5,8 +5,10 @@ AFRAME.registerComponent('pickupable', {
         var self = this;
         self.player = document.querySelector('#mainCam');  // Camera/player
         self.pickedUp = false;
-        self.originalRotation = null;  // Store original rotation
-        self.originalScale = null;  // Store original scale
+        self.originalRotation = null;   // Store original rotation
+        self.originalScale = null;      // Store original scale
+
+        self.pickupSound = document.querySelector('#pickupSound'); //Pickup sound
 
         // Global reference for currently held item
         if (!AFRAME.utils.entityHeld) {
@@ -51,6 +53,8 @@ AFRAME.registerComponent('pickupable', {
                 self.player.object3D.attach(self.el.object3D);
                 self.pickedUp = true;
                 AFRAME.utils.entityHeld = self.el;  // Set global reference
+
+                self.pickupSound.play();
             }
         });
 

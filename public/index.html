@@ -19,6 +19,7 @@
             <a-assets>
                 <a-asset-item id="first_sword_model" src="assets/models/First_Sword/old_viking_sword.glb" response-type="arraybuffer"></a-asset-item>
                 <a-asset-item id="iron" src="assets/models/Iron_Ingot/metal_ingot.glb" response-type="arraybuffer"></a-asset-item>
+                <audio id="pickupSound" src="assets/sounds/coin-collect-retro-8-bit-sound-effect-145251.mp3"></audio>
             </a-assets>
 
             <!-- define our camera -->
@@ -251,8 +252,9 @@
 
             <!-- Spawnning Test-->
             <!-- <a-entity id="sword" gltf-model="#first_sword_model" position="0 0 0" rotation="-90 0 0" scale="0.008 0.008 0.008"></a-entity> -->
-            <a-entity id="ingot" class="ingot" gltf-model="#iron" position="0 1.5 0" rotation="0 90 0" scale="6 6 6" pickupable dynamic-body></a-entity>
+            <!-- <a-entity id="ingot" class="ingot" gltf-model="#iron" position="0 1.5 0" rotation="0 90 0" scale="6 6 6" pickupable dynamic-body></a-entity>
             <a-entity id="ingot" class="ingot" gltf-model="#iron" position="0 2 0" rotation="0 90 0" scale="6 6 6" pickupable dynamic-body></a-entity>
+            -->
         </a-scene>
     </body>
 </html>
